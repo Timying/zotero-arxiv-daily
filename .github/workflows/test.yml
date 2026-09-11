@@ -28,6 +28,12 @@ jobs:
           CUSTOM_CONFIG: ${{ vars.CUSTOM_CONFIG }}
         run: |
           export DEBUG=true
+                    python3 - <<'PY'
+          import os, smtplib
+          with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=30) as server:
+              server.login(os.environ["SENDER"], os.environ["SENDER_PASSWORD"])
+          print("Gmail SMTP login succeeded")
+          PY
           printf "%b\n" "$CUSTOM_CONFIG" > config/custom.yaml
           echo "Use custom config: "
           cat config/custom.yaml
